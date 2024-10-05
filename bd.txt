@@ -1,0 +1,33 @@
+-- Crear la base de datos
+CREATE DATABASE IF NOT EXISTS empresas;
+
+-- Usar la base de datos creada
+USE empresas;
+
+-- Crear la tabla gen_empresas
+CREATE TABLE IF NOT EXISTS gen_empresas (
+    idEmpresa VARCHAR(5) PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    direccion VARCHAR(200) NOT NULL,
+    direccionfacturacion VARCHAR(200),
+    representantelegal VARCHAR(100),
+    telefono VARCHAR(50),
+    correoelectronico VARCHAR(100),
+    codigopostal VARCHAR(20),
+    estado ENUM('A', 'I', 'PEN', 'DES', 'CAN') NOT NULL,
+    principal ENUM('S', 'N') NOT NULL,
+    adiciono VARCHAR(20) NOT NULL,
+    fechaadicion DATE DEFAULT CURRENT_DATE
+);
+
+-- Crear la tabla inv_sucursales
+CREATE TABLE IF NOT EXISTS inv_sucursales (
+    idSucursal VARCHAR(10) PRIMARY KEY,
+    idEmpresa VARCHAR(5) NOT NULL,
+    descripcion VARCHAR(100) NOT NULL,
+    direccion VARCHAR(100),
+    telefono VARCHAR(50),
+    encargado VARCHAR(50),
+    estado ENUM('A', 'I', 'PEN', 'DES', 'CAN') NOT NULL,
+    CONSTRAINT fk_SucursalXempresa FOREIGN KEY (idEmpresa) REFERENCES gen_empresas(idEmpresa)
+);
