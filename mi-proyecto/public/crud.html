@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Empresas y Sucursales</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        .button { margin-left: 5px; }
+        /* Estilo del modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Empresas</h1>
+<form id="empresaForm">
+    <input type="text" id="idEmpresa" placeholder="ID Empresa" required>
+    <input type="text" id="nombre" placeholder="Nombre" required>
+    <button type="submit">Agregar Empresa</button>
+</form>
+<table id="empresasTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<h1>Sucursales</h1>
+<form id="sucursalForm">
+    <input type="text" id="idSucursal" placeholder="ID Sucursal" required>
+    <input type="text" id="idEmpresaSucursal" placeholder="ID Empresa" required>
+    <input type="text" id="descripcion" placeholder="Descripción" required>
+    <button type="submit">Agregar Sucursal</button>
+</form>
+<table id="sucursalesTable">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<!-- Modal para editar empresa -->
+<div id="editEmpresaModal" class="modal">
+    <div class="modal-content">
+        <span id="closeEmpresaModal" style="cursor:pointer; float:right;">&times;</span>
+        <h2>Editar Empresa</h2>
+        <input type="text" id="editIdEmpresa" placeholder="ID Empresa" required>
+        <input type="text" id="editNombre" placeholder="Nombre" required>
+        <button id="saveEditEmpresa">Guardar Cambios</button>
+        <button id="cancelEditEmpresa">Cancelar</button>
+    </div>
+</div>
+
+<!-- Modal para editar sucursal -->
+<div id="editSucursalModal" class="modal">
+    <div class="modal-content">
+        <span id="closeSucursalModal" style="cursor:pointer; float:right;">&times;</span>
+        <h2>Editar Sucursal</h2>
+        <input type="text" id="editIdSucursal" placeholder="ID Sucursal" required>
+        <input type="text" id="editIdEmpresaSucursal" placeholder="ID Empresa" required>
+        <input type="text" id="editDescripcion" placeholder="Descripción" required>
+        <button id="saveEditSucursal">Guardar Cambios</button>
+        <button id="cancelEditSucursal">Cancelar</button>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    function loadEmpresas() {
+        $.get('/api/empresas', function(data) {
+            const tbody = $('#empresasTable tbody').empty();
+            data.forEach(empresa => {
+                tbody.append(`
+                    <tr>
+                        <td>${empresa.idEmpresa}</td>
+                        <td>${empresa.nombre}</td>
+                        <td>
+                            <button class="editEmpresa" data-id="${empresa.idEmpresa}">Editar</button>
+                            <button class="deleteEmpresa" data-id="${empresa.idEmpresa}">Eliminar</button>
+                        </td>
+                    </tr>
+                `);
+            });
+        });
+    }
+
+    function loadSucursales() {
+        $.get('/api/sucursales', function(data) {
+            const tbody = $('#sucursalesTable tbody').empty();
+            data.forEach(sucursal => {
+                tbody.append(`
+                    <tr>
+                        <td>${sucursal.idSucursal}</td>
+                        <td>${sucursal.descripcion}</td>
+                        <td>
+                            <button class="editSucursal" data-id="${sucursal.idSucursal}">Editar</button>
+                            <button class="deleteSucursal" data-id="${sucursal.idSucursal}">Eliminar</button>
+                        </td>
+                    </tr>
+                `);
+            });
+        });
+    }
+
+    loadEmpresas();
+    loadSucursales();
+
+    $('#empresaForm').submit(function(e) {
+        e.preventDefault();
+        const newEmpresa = {
+            idEmpresa: $('#idEmpresa').val(),
+            nombre: $('#nombre').val(),
+        };
+        $.post('/api/empresas', newEmpresa, function() {
+            loadEmpresas();
+            $('#empresaForm')[0].reset();
+        });
+    });
+
+    $('#sucursalForm').submit(function(e) {
+        e.preventDefault();
+        const newSucursal = {
+            idSucursal: $('#idSucursal').val(),
+            idEmpresa: $('#idEmpresaSucursal').val(),
+            descripcion: $('#descripcion').val(),
+        };
+        $.post('/api/sucursales', newSucursal, function() {
+            loadSucursales();
+            $('#sucursalForm')[0].reset();
+        });
+    });
+
+    // Editar empresa
+    $(document).on('click', '.editEmpresa', function() {
+        const id = $(this).data('id');
+        $.get(`/api/empresas/${id}`, function(empresa) {
+            $('#editIdEmpresa').val(empresa.idEmpresa);
+            $('#editNombre').val(empresa.nombre);
+            $('#editEmpresaModal').show();
+        });
+    });
+
+    // Guardar cambios de empresa
+    $('#saveEditEmpresa').click(function() {
+        const updatedEmpresa = {
+            idEmpresa: $('#editIdEmpresa').val(),
+            nombre: $('#editNombre').val(),
+        };
+        $.ajax({
+            url: `/api/empresas/${updatedEmpresa.idEmpresa}`,
+            type: 'PUT',
+            data: updatedEmpresa,
+            success: function() {
+                loadEmpresas();
+                $('#editEmpresaModal').hide();
+            }
+        });
+    });
+
+    // Cerrar modal de empresa
+    $('#closeEmpresaModal, #cancelEditEmpresa').click(function() {
+        $('#editEmpresaModal').hide();
+    });
+
+    // Eliminar empresa
+    $(document).on('click', '.deleteEmpresa', function() {
+        const id = $(this).data('id');
+        $.ajax({
+            url: `/api/empresas/${id}`,
+            type: 'DELETE',
+            success: function() {
+                loadEmpresas();
+            }
+        });
+    });
+
+    // Editar sucursal
+    $(document).on('click', '.editSucursal', function() {
+        const id = $(this).data('id');
+        $.get(`/api/sucursales/${id}`, function(sucursal) {
+            $('#editIdSucursal').val(sucursal.idSucursal);
+            $('#editIdEmpresaSucursal').val(sucursal.idEmpresa);
+            $('#editDescripcion').val(sucursal.descripcion);
+            $('#editSucursalModal').show();
+        });
+    });
+
+    // Guardar cambios de sucursal
+    $('#saveEditSucursal').click(function() {
+        const updatedSucursal = {
+            idSucursal: $('#editIdSucursal').val(),
+            idEmpresa: $('#editIdEmpresaSucursal').val(),
+            descripcion: $('#editDescripcion').val(),
+        };
+        $.ajax({
+            url: `/api/sucursales/${updatedSucursal.idSucursal}`,
+            type: 'PUT',
+            data: updatedSucursal,
+            success: function() {
+                loadSucursales();
+                $('#editSucursalModal').hide();
+            }
+        });
+    });
+
+    // Cerrar modal de sucursal
+    $('#closeSucursalModal, #cancelEditSucursal').click(function() {
+        $('#editSucursalModal').hide();
+    });
+
+    // Eliminar sucursal
+    $(document).on('click', '.deleteSucursal', function() {
+        const id = $(this).data('id');
+        $.ajax({
+            url: `/api/sucursales/${id}`,
+            type: 'DELETE',
+            success: function() {
+                loadSucursales();
+            }
+        });
+    });
+});
+</script>
+
+</body>
+</html>
