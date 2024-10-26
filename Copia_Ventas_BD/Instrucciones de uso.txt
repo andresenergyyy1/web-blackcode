@@ -1,0 +1,4 @@
+uso de el archivo de nombre backup.bat
+
+El siguinte archivo es el encargado de recopilar y generar la copia
+de seguridad de la BD VentasBD
