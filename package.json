@@ -1,0 +1,26 @@
+{
+  "name": "miProyecto",
+  "version": "1.0.0",
+  "description": "Aplicación para consulta de productos de WallMart",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "jspdf": "^2.5.2",
+    "jspdf-autotable": "^3.8.4",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.11.3",
+    "pdfkit": "^0.15.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  },
+  "author": "Xavier Chavaloc",
+  "license": "ISC"
+}

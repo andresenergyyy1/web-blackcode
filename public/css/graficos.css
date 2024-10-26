@@ -1,0 +1,10 @@
+.section {
+    width: 75%; /* 60% del ancho del contenedor */
+    margin: 0 auto; /* Centra el contenedor */
+    border: 2px;
+}
+
+canvas {
+    width: 100% !important; /* Asegura que el canvas use el 100% del contenedor */
+    height: auto !important; /* Mantiene la proporción del canvas */
+}

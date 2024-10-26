@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Productos</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/appProductos.js" defer></script>
+</head>
+<body>
+
+    <div id="navbar"></div>
+    
+    <h1>Registro de Productos</h1>
+
+    <form id="form-container">
+        <div class="form-group">
+            <label for="codigo_producto">Código: </label>
+            <input type="text" id="codigo" required> <!-- Cambié a "codigo" -->
+        </div>
+        <div class="form-group">
+            <label for="numero_serie">No. Serie: </label>
+            <input type="text" id="serie" required> <!-- Cambié a "serie" -->
+        </div>
+        <div class="form-group">
+            <label for="precio_unitario">P/U: </label>
+            <input type="number" id="pu" required step="0.01"> <!-- Cambié a "pu" -->
+        </div>
+        <div class="form-group">
+            <label for="categoria_id">Categoría ID: </label>
+            <input type="number" id="categoria" required> <!-- Cambié a "categoria" -->
+        </div>
+        <div class="form-group">
+            <label for="descripcion">Descripción: </label>
+            <input type="text" id="descripcion" required>
+        </div>
+        <div class="form-group">
+            <label for="impuestos">Impuestos: </label>
+            <input type="number" id="impuestos" required step="0.01" disabled>
+        </div>
+
+        <button type="button" id="guardarProducto" onclick="agregarProducto()">Guardar Producto</button>
+        <button type="button" id="actualizarProducto" style="display:none;" onclick="guardarActualizacion()">Guardar Actualización</button>
+    </form>
+
+    <h2>Tabla de Productos</h2>
+
+    <table id="productosTable">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>No. Serie</th>
+                <th>P/U</th>
+                <th>Categoría ID</th>
+                <th>Descripción</th>
+                <th>Impuestos</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí se agregarán las filas dinámicamente -->
+        </tbody>
+    </table>
+    
+    <script>
+        async function loadNavbar() {
+            const response = await fetch('navbar.html');
+            const data = await response.text();
+            document.getElementById('navbar').innerHTML = data;
+        }
+
+        window.onload = async () => {
+            await loadNavbar();
+            await obtenerProductos();
+        };
+    </script>
+</body>
+</html>

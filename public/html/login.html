@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../css/log.css"> <!-- Enlazar con el archivo CSS -->
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="icon">
+                <img src="../img/user.png" alt="User Icon"> <!-- Coloca aquí tu imagen del ícono -->
+            </div>
+            <form action="/login" method="POST">
+                <label for="correo">Usuario:</label>
+                <input type="text" id="correo" name="correo_empleado" required>
+                <label for="contrasenia">Contraseña:</label>
+                <input type="password" id="contrasenia" name="contrasenhia_empleado" required>
+                <button type="submit">Iniciar sesión</button>
+            </form>
+            <a href="#" id="btnRegistro">Registrarse</a>
+        </div>
+    </div>
+    <script src="../js/app.js"></script>
+</body>
+</html>

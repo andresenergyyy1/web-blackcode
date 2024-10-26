@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Clientes</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        function loadNavbar() {
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar').innerHTML = data;
+                });
+        }
+        window.onload = loadNavbar;
+    </script>
+</head>
+<body>
+
+    <div id="navbar"></div>
+    
+    <h1>Registro de usuarios:</h1>
+
+    <!-- Formulario de Clientes -->
+    <form id="form-container">
+        <div class="form-group">
+            <label for="cliente_id">Cliente: </label>    
+            <input type="text" id="cliente_id" required>
+        </div>
+
+        <div class="form-group">
+            <label for="producto_id">Producto: </label>
+            <input type="text" id="producto_id" required> 
+        </div>
+
+        <div class="form-group">
+            <label for="cantidad">Cantidad: </label>
+            <input type="number" id="cantidad" required>
+        </div>
+
+        <div class="form-group">
+            <label for="precio_unitario">Precio Unitario: </label>
+            <input type="number" id="precio_unitario" required>
+        </div>
+
+        <div class="form-group">
+            <label for="impuestos">Impuestos: </label>
+            <input type="number" id="impuestos" required>
+        </div>
+
+        <div class="form-group">
+            <label for="forma_pago">Forma de pago: </label>
+            <select id="forma_pago" required>
+                <option value="">Seleccionar tipo de pago</option>
+                <option value="tarjeta_credito">Tarjeta de crédito</option>
+                <option value="tarjeta_debito">Tarjeta de débito</option>
+                <option value="efectivo">Efectivo</option>
+                <option value="transferencia">Transferencia</option>
+            </select>
+        </div>
+
+        <!-- Botones en la parte inferior -->
+        <button type="button" id="guardarCliente" onclick="agregarCliente()">Guardar Cliente</button>
+        <button type="button" id="actualizarCliente" style="display:none;" onclick="guardarActualizacion()">Guardar Actualización</button>
+    </form>
+
+    <h2>Resumen de Venta :</h2>
+
+    <!-- Tabla para mostrar los clientes -->
+    <table id="clientesTable">
+        <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Impuestos</th>
+                <th>Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí se agregarán las filas dinámicamente -->
+        </tbody>
+    </table>
+
+    <!-- Sumatoria de total de los productos  -->
+    <form id="form-container"> 
+    <div class="form-group">
+        <label for="Total_final">Total Final: </label>  
+        <input type="text" id="Total_final" readonly>
+    </div>
+
+    <!-- Botones de acción para efectuar la compra -->
+    <button type="button" id="Finalizar_venta" onclick="finalizarVenta()">Finalizar Venta</button>
+    <button type="button" id="Cancelar_venta" style="display:none;" onclick="cancelarVenta()">Cancelar Venta</button>
+    </form>
+    <script>
+        let clientes = [];
+        let clienteEnEdicion = null; // Para saber qué cliente se está editando
+
+        // Función para agregar un cliente
+        function agregarCliente() {
+            const cliente_id = document.getElementById('cliente_id').value;
+            const producto_id = document.getElementById('producto_id').value;
+            const cantidad = parseInt(document.getElementById('cantidad').value);
+            const precio_unitario = parseFloat(document.getElementById('precio_unitario').value);
+            const impuestos = parseFloat(document.getElementById('impuestos').value);
+            const forma_pago = document.getElementById('forma_pago').value;
+
+            const total = (precio_unitario + impuestos) * cantidad;
+
+            const cliente = {
+                cliente_id,
+                producto_id,
+                cantidad,
+                precio_unitario,
+                impuestos,
+                total,
+                forma_pago
+            };
+
+            clientes.push(cliente);
+            actualizarTablaClientes();
+            calcularTotalFinal();
+            document.getElementById('form-container').reset(); // Limpiar el formulario
+        }
+
+        // Función para actualizar la tabla de clientes
+        function actualizarTablaClientes() {
+            const tbody = document.querySelector('#clientesTable tbody');
+            tbody.innerHTML = '';
+
+            clientes.forEach((cliente, index) => {
+                const fila = document.createElement('tr');
+                fila.innerHTML = `
+                    <td>${cliente.cliente_id}</td>
+                    <td>${cliente.producto_id}</td>
+                    <td>${cliente.cantidad}</td>
+                    <td>${cliente.precio_unitario.toFixed(2)}</td>
+                    <td>${cliente.impuestos.toFixed(2)}</td>
+                    <td>${cliente.total.toFixed(2)}</td>
+                    <td>
+                        <button onclick="editarCliente(${index})">Editar</button>
+                        <button onclick="eliminarCliente(${index})">Eliminar</button>
+                    </td>
+                `;
+                tbody.appendChild(fila);
+            });
+        }
+
+        // Función para calcular el total final
+        function calcularTotalFinal() {
+            const totalFinal = clientes.reduce((sum, cliente) => sum + cliente.total, 0);
+            document.getElementById('Total_final').value = totalFinal.toFixed(2);
+        }
+
+        // Función para eliminar un cliente
+        function eliminarCliente(index) {
+            clientes.splice(index, 1);
+            actualizarTablaClientes();
+            calcularTotalFinal();
+        }
+
+        // Función para editar un cliente
+        function editarCliente(index) {
+            clienteEnEdicion = index;
+            const cliente = clientes[index];
+
+            document.getElementById('cliente_id').value = cliente.cliente_id;
+            document.getElementById('producto_id').value = cliente.producto_id;
+            document.getElementById('cantidad').value = cliente.cantidad;
+            document.getElementById('precio_unitario').value = cliente.precio_unitario;
+            document.getElementById('impuestos').value = cliente.impuestos;
+            document.getElementById('forma_pago').value = cliente.forma_pago;
+
+            document.getElementById('guardarCliente').style.display = 'none'; // Ocultar el botón de guardar
+            document.getElementById('actualizarCliente').style.display = 'inline'; // Mostrar el botón de actualizar
+        }
+
+        // Función para guardar la actualización del cliente
+        function guardarActualizacion() {
+            if (clienteEnEdicion === null) return;
+
+            const cliente_id = document.getElementById('cliente_id').value;
+            const producto_id = document.getElementById('producto_id').value;
+            const cantidad = parseInt(document.getElementById('cantidad').value);
+            const precio_unitario = parseFloat(document.getElementById('precio_unitario').value);
+            const impuestos = parseFloat(document.getElementById('impuestos').value);
+            const forma_pago = document.getElementById('forma_pago').value;
+
+            const total = (precio_unitario + impuestos) * cantidad;
+
+            clientes[clienteEnEdicion] = {
+                cliente_id,
+                producto_id,
+                cantidad,
+                precio_unitario,
+                impuestos,
+                total,
+                forma_pago
+            };
+
+            actualizarTablaClientes();
+            calcularTotalFinal();
+            document.getElementById('form-container').reset(); // Limpiar el formulario
+
+            clienteEnEdicion = null; // Resetear la edición
+            document.getElementById('guardarCliente').style.display = 'inline'; // Mostrar el botón de guardar
+            document.getElementById('actualizarCliente').style.display = 'none'; // Ocultar el botón de actualizar
+        }
+
+        // Función para finalizar la venta
+        function finalizarVenta() {
+            const { jsPDF } = window.jspdf;
+
+            const doc = new jsPDF();
+            doc.setFontSize(16);
+            doc.text("Factura de Venta", 20, 20);
+
+            const clienteInfo = `Nombre: ${clientes[0].cliente_id}\nTeléfono: [Número]\nCorreo: [Correo]\nDirección: [Dirección]`;
+            doc.text(clienteInfo, 20, 40);
+
+            doc.text("Resumen de Compra:", 20, 60);
+            doc.autoTable({
+                head: [['ID Producto', 'Descripción', 'Precio Unitario', 'Impuestos', 'Total']],
+                body: clientes.map(cliente => [
+                    cliente.producto_id,
+                    cliente.producto_id, // Aquí puedes cambiar a una descripción real
+                    (cliente.precio_unitario + cliente.impuestos).toFixed(2),
+                    cliente.impuestos.toFixed(2),
+                    cliente.total.toFixed(2)
+                ]),
+                startY: 70
+            });
+
+            doc.text("Gracias por su compra", 20, doc.autoTable.previous.finalY + 10);
+            doc.save('factura.pdf');
+        }
+
+        // Función para cancelar la venta
+        function cancelarVenta() {
+            const confirmCancel = confirm("¿Está seguro que desea cancelar la venta?");
+            if (confirmCancel) {
+                clientes = [];
+                actualizarTablaClientes();
+                calcularTotalFinal();
+            }
+        }
+    </script>
+</body>
+</html>

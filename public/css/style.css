@@ -1,0 +1,436 @@
+        /* Estilo general de la página */
+body {
+    background-color: #ffffff; /* Fondo blanco */
+    font-family: 'Arial', sans-serif;
+    color: #333333; /* Texto en gris muy oscuro */
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilo general de la barra de navegación */
+nav {
+    background-color: #333333; /* Fondo gris oscuro para la barra */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    width: 100%; /* Ocupa todo el ancho de la pantalla */
+    margin: 0; /* Sin margen */
+
+}
+
+/* Lista de navegación */
+nav ul {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    width: 100%; /* Ocupa todo el ancho de la barra */
+    padding: 0;
+    margin: 0;
+}
+
+/* Información del usuario a la izquierda */
+nav .user-info {
+    display: flex;
+    align-items: center;
+    margin-right: auto; /* Empuja los otros elementos hacia la derecha */
+}
+
+.logo {
+    margin-right: 0 px; /* Menos espacio entre logo y título */
+    margin-left: 30px;
+}
+
+.logo-img {
+    width: 50px; /* Tamaño del logo ajustado */
+}
+
+
+nav .user-info a {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+
+}
+
+/* Elementos de la lista */
+nav ul li {
+    padding: 25px 45px;
+    cursor: pointer;
+    color: #ffffff; /* Texto blanco */
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+/* Deshabilitar el cambio de color para el hover en la clase user-info */
+nav ul li.user-info:hover {
+    background-color: inherit; /* Mantener el color original del fondo */
+}
+
+/* Aplicar el efecto hover solo a los li que no tengan la clase user-info */
+nav ul li:not(.user-info):hover {
+    background-color: #555555; /* Fondo más claro solo para los elementos que no sean .user-info */
+}
+
+/* Enlaces dentro de los elementos de lista */
+nav ul li a {
+    text-decoration: none;
+    color: #ffffff; /* Letras en blanco */
+}
+
+/* Efecto hover y estado activo */
+nav ul li:hover,
+nav ul li.active {
+    background-color: #555555; /* Fondo más claro cuando se hace clic o se pasa el ratón */
+}
+
+/* Estilo para indicar la pestaña activa */
+nav ul li.active {
+    background-color: #777777; /* Color distintivo para la pestaña activa */
+}
+
+/* Empujar elementos de navegación hacia la derecha */
+nav ul li:not(.user-info) {
+    margin-left: auto;
+}
+
+
+/* Estilo general para la tabla */
+table {
+    width: 100%; /* Ancho completo de la tabla */
+    border-collapse: collapse; /* Elimina los espacios entre las celdas */
+    margin-top: 20px; /* Espacio superior para separar del contenido superior */
+    font-family: Arial, sans-serif;
+    border:5px solid #ffffff;
+}
+
+/* Estilo para las celdas y encabezados */
+th, td {
+    padding: 12px 15px; /* Espaciado interno de las celdas */
+    text-align: left; /* Alineación del texto a la izquierda */
+}
+
+/* Encabezado de la tabla */
+th {
+    background-color: #000000; /* Fondo negro para encabezados */
+    color: #ffffff; /* Texto blanco */
+    font-weight: bold; /* Texto en negrita */
+    border:1px solid #gray;
+}
+
+/* Filas impares */
+tr:nth-child(odd) {
+    background-color: #f0f0f0; /* Color de fondo claro para las filas impares */
+}
+
+/* Filas pares */
+tr:nth-child(even) {
+    background-color: #cccccc; /* Color de fondo gris claro para las filas pares */
+}
+
+/* Celdas específicas */
+td {
+    color: #000000; /* Color del texto */
+    border:2px solid #ffffff;
+}
+
+/* Botones de acción */
+button {
+    background-color: #333333; /* Fondo gris oscuro para los botones */
+    color: #ffffff; /* Texto blanco */
+    border: none; /* Sin bordes */
+    padding: 8px 12px; /* Espaciado interno */
+    border-radius: 4px; /* Bordes redondeados */
+    font-weight: bold; /* Texto en negrita */
+    cursor: pointer; /* Cursor en forma de mano */
+    margin-right: 5px; /* Espacio entre los botones */
+    transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
+    margin-left: 5px;
+}
+
+/* Efecto hover para los botones */
+button:hover {
+    background-color: #555555; /* Fondo más claro al pasar el ratón */
+}
+
+/* Botón de eliminación (X) */
+button.delete {
+    background-color: #555555; /* Fondo más oscuro para el botón de eliminación */
+}
+
+/* Efecto hover para el botón de eliminación */
+button.delete:hover {
+    background-color: #777777; /* Fondo aún más claro al pasar el ratón */
+}
+
+/* Estilo para el botón de actualización */
+button.update {
+    background-color: #333333; /* Fondo gris oscuro */
+    color: #ffffff; /* Texto blanco */
+    border: none; /* Sin bordes */
+    padding: 10px 20px; /* Espaciado interno */
+    border-radius: 4px; /* Bordes redondeados */
+    font-weight: bold; /* Texto en negrita */
+    cursor: pointer; /* Cursor en forma de mano */
+    transition: background-color 0.3s ease; /* Transición suave al pasar el ratón */
+    margin-top: 1px; /* Espacio superior */
+}
+
+/* Efecto hover para el botón de actualización */
+button.update:hover {
+    background-color: #555555; /* Fondo más claro al pasar el ratón */
+}
+
+
+/* Enlaces */
+a {
+    color: #333333;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #444444; /* Cambio de color al pasar el ratón */
+}
+
+
+
+/* Contenedor principal del formulario */
+#form-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Dos columnas */
+    gap: 20px; /* Espacio entre columnas */
+}
+
+/* Contenedor de los pares label-input */
+.form-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+/* Estilo para los labels */
+#form-container label {
+    background-color: #333333; /* Fondo oscuro para los labels */
+    color: #ffffff; /* Texto blanco */
+    padding: 13.5px 15px;
+    font-weight: bold;
+    border-radius: 5px 0 0 5px;
+    margin-right: 0px;
+    width: 250px; /* Ancho fijo */
+    text-align: center;
+}
+
+/* Estilo para los inputs */
+#form-container input[type="text"],
+#form-group input[type="number"],
+#form-container input[type="email"] {
+    padding: 15px;
+    border: none;
+    border-radius: 0 5px 5px 0;
+    background-color: #e3e2e1; /* Fondo blanco */
+    color: #000000; /* Texto negro */
+    width: 100%; /* Ajustar al tamaño de la columna */
+}
+
+#sexo {
+    width: 106%; /* Coincide con el ancho de los otros campos */
+    padding: 12px; /* Ajusta el relleno para que coincida con los campos de texto */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
+}
+
+
+/* Flecha personalizada para el select */
+#sexo::after {
+    content: '▼'; /* Caracter de flecha hacia abajo */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    border-radius: 5px; /* Redondea las esquinas de las opciones */
+}
+
+/* Opciones del menú desplegable */
+#sexo option {
+    padding: 10px;
+    background-color: #fff;
+    color: #333;
+    border-radius: 5px; /* Redondea las esquinas de las opciones */
+}
+
+/* Estilo de la lista desplegable */
+#sexo:focus {
+    outline: none;
+    border: 1px solid #b62b0d; /* Cambia el borde al enfocarse */
+    border-radius: 5px; /* Redondea las esquinas de las opciones */
+}
+
+/* Opciones al pasar el cursor */
+#sexo option:hover {
+    background-color: #f1f1f1; /* Cambia el fondo al pasar el cursor */
+    border-radius: 5px; /* Redondea las esquinas de las opciones */
+}
+
+/* Opciones seleccionadas */
+#sexo option:checked {
+    background-color: #b62b0d; /* Color de fondo al seleccionar */
+    color: #fff;
+    border-radius: 5px; /* Redondea las esquinas de las opciones */
+}
+
+
+
+
+
+
+
+
+#forma_pago {
+    width: 106%; /* Coincide con el ancho de los otros campos */
+    padding: 12px; /* Ajusta el relleno para que coincida con los campos de texto */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+    box-sizing: border-box; /* Asegura que el padding se incluya en el ancho total */
+}
+
+
+/* Flecha personalizada para el select */
+#forma_pago::after {
+    content: '▼'; /* Caracter de flecha hacia abajo */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    border-radius: 5px; /* Redondea las esquinas de las opciones */
+}
+
+/* Opciones del menú desplegable */
+#forma_pago option {
+    padding: 10px;
+    background-color: #fff;
+    color: #333;
+    border-radius: 5px; /* Redondea las esquinas de las opciones */
+}
+
+
+
+
+
+
+
+
+
+/* Estilo general para el contenedor de la clase form-group */
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* Estilo para las etiquetas (labels) */
+.form-group label {
+    width: 150px; /* Puedes ajustar este ancho según el diseño */
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Estilo para los campos de entrada de texto */
+.form-group input[type="number"] {
+    width: 100%;
+    padding: 13px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+    box-sizing: border-box;
+}
+
+/* Estilo para redondear los bordes del campo */
+.form-group input[type="number"]:focus {
+    outline: none;
+    border-color: #333; /* Cambia el color del borde en foco si lo deseas */
+}
+
+
+
+
+
+
+
+/* Botones */
+#form-container button {
+    background-color: #333333; /* Fondo gris oscuro */
+    color: #ffffff; /* Texto blanco */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    width: 200px; /* Ancho fijo para los botones */
+    align-self: center;
+    justify-self: center;
+}
+/* Hover para los botones */
+#form-container button:hover {
+    background-color: #555555;
+}
+
+/* Contenedor general del formulario */
+#filterForm {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espacio entre los elementos */
+    flex-wrap: wrap; /* Permite que los elementos bajen a la siguiente línea si es necesario */
+    margin-bottom: 20px; /* Separación inferior */
+}
+
+/* Estilo general para las etiquetas (labels) */
+#filterForm label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+/* Estilo para los campos de fecha */
+#filterForm input[type="date"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+    color: #333;
+    width: 200px; /* Puedes ajustar el ancho según tus necesidades */
+    box-sizing: border-box;
+}
+
+/* Estilo para el botón de filtrar */
+#filterForm button[type="submit"] {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Cambiar el color del botón al hacer hover */
+#filterForm button[type="submit"]:hover {
+    background-color: #555;
+}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Index - WallMart</title>
+</head>
+<body>
+    <%- include('navbar.ejs'); %>
+    <h2>Bienvenido, <%= usuario.nombre %></h2>
+
+    <h3>Agregar Producto</h3>
+    <!-- Formulario de Productos -->
+    <form id="form-container" action="/productos/insertar" method="POST">
+        <!-- Primera columna -->
+        <div class="form-group">
+            <label for="codigo">Código:</label>
+            <input type="text" id="codigo" name="codigo" required>
+        </div>
+
+        <div class="form-group">
+            <label for="descripcion">Descripción:</label>
+            <input type="text" id="descripcion" name="descripcion" required>
+        </div>
+        <!-- Parte diferente  para precios -->
+
+        <div class="form-group">
+            <label for="precio_venta">Precio Venta:</label>
+            <input type="number" id="precio_venta" name="precio_venta" required>
+        </div>
+
+        <div class="form-group">
+            <label for="precio_oferta">Precio Oferta:</label>
+            <input type="number" id="precio_oferta" name="precio_oferta" required>
+        </div>
+
+        <!-- Parte diferente  para precios -->
+        
+        <div class="form-group">
+            <label for="oferta">Oferta (S/N):</label>
+            <input type="text" id="oferta" name="oferta" required>
+        </div>
+
+        <!-- Botón en la parte inferior ocupando ambas columnas -->
+        <button type="submit">Insertar Producto</button>
+    </form>
+    
+    <h3>Productos en Oferta</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Precio Venta</th>
+                <th>Precio Oferta</th>
+                <th>Oferta</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% productos.forEach(producto => { %>
+                <tr>
+                    <td><%= producto.codigo %></td>
+                    <td><%= producto.descripcion %></td>
+                    <td><%= producto.precio_venta %></td>
+                    <td><%= producto.precio_oferta %></td>
+                    <td><%= producto.oferta %></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+</body>
+</html>

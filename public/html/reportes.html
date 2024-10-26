@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <script>
+        function loadNavbar() {
+            fetch('navbar.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('navbar').innerHTML = data;
+                });
+        }
+        window.onload = loadNavbar;
+    </script>
+</head>
+<body>
+    <div id="navbar"></div>
+    <h1>Filtrar Ventas por Rango de Fechas</h1>
+    <form id="filterForm">
+        <label for="startDate">Fecha de Inicio:</label>
+        <input type="date" id="startDate" name="startDate" required>
+        <label for="endDate">Fecha Final:</label>
+        <input type="date" id="endDate" name="endDate" required>
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <table id="resultsTable" border="1">
+        <thead>
+            <tr>
+                <th>Venta ID</th>
+                <th>Nombre Producto</th>
+                <th>Cantidad Vendida</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <button id="downloadPdf">Descargar PDF</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.14/jspdf.plugin.autotable.min.js"></script>
+    <script src="../js/appReportes.js"></script>
+</body>
+</html>
